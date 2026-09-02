@@ -9,3 +9,36 @@ html, body, #root {
   padding: 0;
   overflow: hidden;
 }
+/* Custom Professional Leaflet Dark Popups */
+.leaflet-popup-content-wrapper {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #27272a !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6) !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px 14px !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-popup-tip {
+  background: #18181b !important;
+}
+
+/* Subtle, unobtrusive attribution bar */
+.leaflet-control-attribution {
+  background: rgba(9, 9, 11, 0.75) !important;
+  color: #71717a !important;
+  font-size: 10px !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  margin: 6px !important;
+  backdrop-filter: blur(4px);
+}
+.leaflet-control-attribution a {
+  color: #a1a1aa !important;
+  text-decoration: none;
+}

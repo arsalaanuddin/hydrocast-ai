@@ -1,8 +1,8 @@
 import React from 'react';
-import { Clock, Play, Pause, FastForward, RotateCcw } from 'lucide-react';
+import { Play, Pause, RotateCcw, Clock } from 'lucide-react';
 
 interface TimeSliderProps {
-  currentStep: number; // 0 to 12 (0 to 180 minutes in 15m steps)
+  currentStep: number;
   onStepChange: (step: number) => void;
   isPlaying: boolean;
   onTogglePlay: () => void;
@@ -14,43 +14,46 @@ export const TimeSlider: React.FC<TimeSliderProps> = ({
   isPlaying,
   onTogglePlay,
 }) => {
-  const totalMinutes = currentStep * 15;
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  const timeFormatted = `+${hours}h ${minutes.toString().padStart(2, '0')}m`;
+  // Compute projected time based on step
+  const now = new Date();
+  const projectedTime = new Date(now.getTime() + currentStep * 15 * 60000);
+  const formattedProjected = projectedTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
 
   return (
-    <div className="bg-slate-900/95 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 shadow-2xl space-y-3">
+    <div className="bg-zinc-900/90 border border-zinc-800 rounded-lg p-3 space-y-2.5">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <Clock className="w-4 h-4 text-sky-400" />
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
-            Nowcasting Window (0–3 Hours)
+          <Clock className="w-3.5 h-3.5 text-zinc-400" />
+          <span className="text-[11px] font-semibold text-zinc-300 uppercase tracking-wider">
+            Forecast Horizon
           </span>
         </div>
-        <div className="px-2.5 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-sky-400 font-mono text-xs font-bold">
-          {timeFormatted} Horizon
+        <div className="flex items-center space-x-2">
+          <span className="text-[11px] text-zinc-400 font-mono">+{currentStep * 15}m</span>
+          <span className="text-[11px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-200 font-mono border border-zinc-700">
+            {formattedProjected}
+          </span>
         </div>
       </div>
 
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-2.5">
         <button
           onClick={onTogglePlay}
-          className="p-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 font-bold transition shadow-lg active:scale-95 flex items-center justify-center shrink-0"
-          title={isPlaying ? "Pause Simulation" : "Play Spatiotemporal Simulation"}
+          className="p-2 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-100 transition border border-zinc-700 flex items-center justify-center cursor-pointer"
+          title={isPlaying ? "Pause Simulation" : "Play Simulation"}
         >
-          {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
+          {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
         </button>
 
         <button
           onClick={() => onStepChange(0)}
-          className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition shrink-0"
+          className="p-2 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-200 transition border border-zinc-700 cursor-pointer"
           title="Reset to Live (T=0)"
         >
-          <RotateCcw className="w-4 h-4" />
+          <RotateCcw className="w-3.5 h-3.5" />
         </button>
 
-        <div className="flex-1 space-y-1.5">
+        <div className="flex-1 space-y-1">
           <input
             type="range"
             min="0"
@@ -58,10 +61,10 @@ export const TimeSlider: React.FC<TimeSliderProps> = ({
             step="1"
             value={currentStep}
             onChange={(e) => onStepChange(Number(e.target.value))}
-            className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-400"
+            className="w-full h-1.5 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
           />
-          <div className="flex justify-between text-[10px] font-mono text-slate-400">
-            <span>Now (0m)</span>
+          <div className="flex justify-between text-[10px] font-mono text-zinc-400">
+            <span>T+0</span>
             <span>+45m</span>
             <span>+90m</span>
             <span>+135m</span>
