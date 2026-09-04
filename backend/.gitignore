@@ -1,0 +1,14 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.env
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# Large Model Weights & Data
+backend/ml/*.pth
+backend/*.onnx
